@@ -1,30 +1,41 @@
 <script>
-	export let name;
+  import Header from "./components/Header.svelte";
+  import Home from "./components/Home.svelte";
+  import Card from "./components/Card.svelte";
+  import Error from "./components/Error.svelte";
+
+  let activeRoute = "home";
+  let error;
+  function handleNavigate(event) {
+    if (event.detail.error) {
+      error = event.detail.error;
+    } else {
+      error = null;
+    }
+    activeRoute = event.detail.route;
+  }
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
-
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
 </style>
+
+<Header />
+<main>
+  {#if !error}
+    <section class="namecard">
+      <div class="namecard-hello">
+        <p class="namecard-greeting">Welcome, student!</p>
+      </div>
+      {#if activeRoute === 'home'}
+        <Home on:navigate={handleNavigate} />
+      {:else if activeRoute === 'cards'}
+        <Card on:navigate={handleNavigate} />
+      {:else}
+        <Home on:navigate={handleNavigate} />
+      {/if}
+    </section>
+  {:else}
+    <Error on:navigate={handleNavigate} {error} />
+  {/if}
+</main>
