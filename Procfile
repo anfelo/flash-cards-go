@@ -1,1 +1,1 @@
-web: bin/wowapi
+web: bin/flash-cards-go
