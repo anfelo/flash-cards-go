@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 )
 
 type intercept404 struct {
@@ -42,7 +43,13 @@ func spaFileServeFunc(dir string) func(http.ResponseWriter, *http.Request) {
 }
 
 func main() {
+	port := os.Getenv("PORT")
+	defaultPort := "8080"
 	http.HandleFunc("/", spaFileServeFunc("public"))
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	if !(port == "") {
+		log.Fatal(http.ListenAndServe(":"+port, nil))
+	} else {
+		log.Fatal(http.ListenAndServe(":"+defaultPort, nil))
+	}
 }
