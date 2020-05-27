@@ -42,7 +42,7 @@ func spaFileServeFunc(dir string) func(http.ResponseWriter, *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", spaFileServeFunc("client/public"))
+	http.HandleFunc("/", spaFileServeFunc("public"))
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
